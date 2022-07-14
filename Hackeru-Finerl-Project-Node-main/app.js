@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const usersRouter = require("./Routes/Users/userRouter");
 const cardsRouter = require("./Routes/Cards/cardsRouter");
+const transactions = require("./Routes/Transactions/transactionsRouter");
 const restPassword = require("./Routes/resetPassword");
 const payments = require("./Routes/thanksYouMsg");
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/users", usersRouter);
 app.use("/api/cards", cardsRouter);
+app.use("/api/transactions", transactions);
 app.use("/", restPassword);
 app.use("/", payments);
 

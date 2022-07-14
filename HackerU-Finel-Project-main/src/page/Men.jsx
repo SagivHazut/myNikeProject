@@ -106,7 +106,7 @@ const MenStore = (props) => {
       <div className="row row-cols-1 row-cols-md-5 g-5">
         {menCollation.map((item, index) => {
           return (
-            <Fragment>
+            <Fragment key={index}>
               <div className="col">
                 <Carousel
                   className="main-slide"

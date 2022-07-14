@@ -12,37 +12,84 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
 const Checkout = (props) => {
   const [shoppingCart, setShoppingCart] = useState([]);
-  const [email, setEmail] = useState("");
   const history = useHistory();
   const URL = "http://localhost:8181/payments?email=";
-  const itemsPrice = shoppingCart.reduce((a, c) => a + 1 * c.phone, 0);
+  const itemsPrice = shoppingCart.reduce((a, c) => a + 1 * c.item.phone, 0);
 
-  useEffect(() => {
-    const product = window.localStorage.getItem("product");
-    setShoppingCart(JSON.parse(product));
-  }, []);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("emailMessage");
+  const [cartItems, setCartItems] = useState("products");
+  const [address, setAddress] = useState();
+  const [country, setCountry] = useState();
+  const [state, setState] = useState();
+  const [zip, setZip] = useState();
+  const [cardName, setCardName] = useState();
+  const [cardNumber, setCardNumber] = useState();
+  const [expiration, setExpiration] = useState();
+  const [cvv, setCvv] = useState();
 
-  const handleEmailChange = (ev) => {
-    setEmail(ev.target.value);
+  const handleFirstName = (ev) => {
+    setFirstName(ev.target.value);
   };
-  const clearShoppingCart = () => {
-    window.localStorage.clear("product");
+  const handleLastName = (ev) => {
+    setLastName(ev.target.value);
   };
-  const Submit = async (ev) => {
+
+  const handleAddress = (ev) => {
+    setAddress(ev.target.value);
+  };
+  const handleCountry = (ev) => {
+    setCountry(ev.target.value);
+  };
+  const handleState = (ev) => {
+    setState(ev.target.value);
+  };
+  const handleZip = (ev) => {
+    setZip(ev.target.value);
+  };
+  const handleCardName = (ev) => {
+    setCardName(ev.target.value);
+  };
+  const handleCardNumber = (ev) => {
+    setCardNumber(ev.target.value);
+  };
+  const handleExpiration = (ev) => {
+    setExpiration(ev.target.value);
+  };
+  const handleCvv = (ev) => {
+    setCvv(ev.target.value);
+  };
+  const Submit = (ev) => {
     ev.preventDefault();
-    handleSubmit();
-
     axios
-      .get(`${URL}${email}`, { email })
+      .post("/transactions", {
+        firstName,
+        lastName,
+        email,
+        state,
+        country,
+        address,
+        zip,
+        cardName,
+        expiration,
+        cardNumber,
+        cvv,
+        cartItems,
+      })
       .then((res) => {
-        history.push("/home", toast.success("Email sent Successfully"));
-      }, clearShoppingCart())
-
+        ev.preventDefault();
+        axios.get(`${URL}${email}`, { email, cartItems }).then((res) => {
+          history.push(
+            "/home",
+            toast.success("Email sent Successfully"),
+            clearShoppingCart()
+          );
+        });
+      })
       .catch((err) => {
         toast.error(err.response.data);
         if (err.response) {
@@ -50,80 +97,17 @@ const Checkout = (props) => {
       });
   };
 
-  function validate(values) {
-    const errors = {};
+  useEffect(() => {
+    const products = window.localStorage.getItem("product");
+    const emailMessage = window.localStorage.getItem("email");
+    setShoppingCart(JSON.parse(products));
+    setCartItems(JSON.parse(products));
+    setEmail(JSON.parse(emailMessage));
+  }, []);
 
-    if (!values.firstname) {
-      errors.firstname = "Required";
-    } else if (!/^[a-z ,.'-]+$/i.test(values.firstname)) {
-      errors.firstname = "Invalid first name address";
-    }
-
-    if (!values.lastname) {
-      errors.lastname = "Required";
-    } else if (!/^[a-z ,.'-]+$/i.test(values.lastname)) {
-      errors.lastname = "Invalid last name address";
-    }
-
-    if (!values.email) {
-      errors.email = "Required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = "Invalid email address";
-    }
-    if (!values.address) {
-      errors.address = "Required";
-    }
-
-    if (!values.zip) {
-      errors.zip = "Required";
-    } else if (!/^\d{5}[-\s]?(?:\d{4})?$/i.test(values.zip)) {
-      errors.zip = "Invalid zip address";
-    }
-
-    if (!values.card) {
-      errors.card = "Required";
-    } else if (!/^[a-z ,.'-]+$/i.test(values.card)) {
-      errors.card = "Invalid card address";
-    }
-
-    if (!values.cardnumber) {
-      errors.cardnumber = "Required";
-    } else if (!/^([0-9]{12}[0-9]{3})$/i.test(values.cardnumber)) {
-      errors.cardnumber = "Invalid Cardit card number address";
-    }
-
-    if (!values.expiration) {
-      errors.expiration = "Required";
-    }
-
-    if (!values.CVV) {
-      errors.CVV = "Required";
-    } else if (!/([0-9]{3})/i.test(values.CVV)) {
-      errors.CVV = "Invalid CVV number address";
-    }
-
-    return errors;
-  }
-
-  const { handleSubmit, handleChange, handleBlur, touched, errors } = useFormik(
-    {
-      initialValues: {
-        firstname: Yup.string().required("Required"),
-        lastname: "",
-        address: "",
-        country: "",
-        state: "",
-        zip: "",
-        card: "",
-        cardnumber: "",
-        expiration: "",
-        CVV: "",
-      },
-      validate,
-    }
-  );
+  const clearShoppingCart = () => {
+    window.localStorage.clear("products");
+  };
 
   return (
     <div className="checkout " onSubmit={Submit}>
@@ -211,16 +195,13 @@ const Checkout = (props) => {
                     <input
                       type="text"
                       name="firstname"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      onChange={handleFirstName}
+                      value={firstName}
                       className="form-control"
                       id="lastName"
                       placeholder="Last Name"
                       required
                     />
-                    {touched.firstname && errors.firstname ? (
-                      <div style={{ color: "red" }}>First Name is Required</div>
-                    ) : null}
                   </div>
                   <div className="col-md-6 mb-3">
                     <label htmlFor="lastname" className="form-label">
@@ -232,28 +213,10 @@ const Checkout = (props) => {
                       id="lastname"
                       placeholder="Last Name"
                       name="lastname"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      value={lastName}
+                      onChange={handleLastName}
                     />
-                    {touched.lastname && errors.lastname ? (
-                      <div style={{ color: "red" }}> Last Name is Required</div>
-                    ) : null}
                   </div>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    required
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
                 </div>
 
                 <div className="mb-3">
@@ -267,12 +230,9 @@ const Checkout = (props) => {
                     placeholder="1234 Main St"
                     required
                     name="address"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    value={address}
+                    onChange={handleAddress}
                   />
-                  {touched.address && errors.address ? (
-                    <div style={{ color: "red" }}>Address is Required</div>
-                  ) : null}
                 </div>
 
                 <div className="row">
@@ -280,7 +240,13 @@ const Checkout = (props) => {
                     <label htmlFor="country" className="form-label">
                       Country
                     </label>
-                    <select className="form-select d-block w-100" id="country">
+                    <select
+                      className="form-select d-block w-100"
+                      id="country"
+                      onChange={handleCountry}
+                      value={country}
+                    >
+                      <option>United States</option>
                       <option>United States</option>
                     </select>
                     <div className="invalid-feedback">
@@ -292,6 +258,8 @@ const Checkout = (props) => {
                       State
                     </label>
                     <select
+                      onChange={handleState}
+                      value={state}
                       className="form-select d-block w-100"
                       id="state"
                       required
@@ -360,12 +328,9 @@ const Checkout = (props) => {
                       id="zip"
                       placeholder="Zip Code"
                       name="zip"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      value={zip}
+                      onChange={handleZip}
                     />
-                    {touched.zip && errors.zip ? (
-                      <div style={{ color: "red" }}>Zip Code is Required</div>
-                    ) : null}{" "}
                   </div>
                 </div>
                 <hr className="mb-4" />
@@ -411,12 +376,10 @@ const Checkout = (props) => {
                       placeholder="Full name as displayed on card
                       "
                       name="card"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      value={cardName}
+                      onChange={handleCardName}
                     />
-                    {touched.card && errors.card ? (
-                      <div style={{ color: "red" }}>Card Name is Required</div>
-                    ) : null}{" "}
+
                     <br />
                     <div className="invalid-feedback">
                       Name on card is required
@@ -432,14 +395,9 @@ const Checkout = (props) => {
                       id="cc-number"
                       placeholder=""
                       name="cardnumber"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      value={cardNumber}
+                      onChange={handleCardNumber}
                     />
-                    {touched.cardnumber && errors.cardnumber ? (
-                      <div style={{ color: "red" }}>
-                        Card Number is Required
-                      </div>
-                    ) : null}{" "}
                   </div>
                 </div>
                 <div className="row">
@@ -453,15 +411,9 @@ const Checkout = (props) => {
                       id="cc-expiration"
                       placeholder=""
                       name="expiration"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      value={expiration}
+                      onChange={handleExpiration}
                     />
-                    {touched.expiration && errors.expiration ? (
-                      <div style={{ color: "red" }}>
-                        {" "}
-                        Expiration date required
-                      </div>
-                    ) : null}{" "}
                   </div>
                   <div className="col-md-3 mb-3">
                     <label htmlFor="cc-expiration" className="form-label">
@@ -473,15 +425,9 @@ const Checkout = (props) => {
                       id="cc-cvv"
                       placeholder=""
                       name="CVV"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      value={cvv}
+                      onChange={handleCvv}
                     />
-                    {touched.CVV && errors.CVV ? (
-                      <div style={{ color: "red" }}>
-                        {" "}
-                        Security code required
-                      </div>
-                    ) : null}{" "}
                   </div>
                 </div>
                 <hr className="mb-4" />

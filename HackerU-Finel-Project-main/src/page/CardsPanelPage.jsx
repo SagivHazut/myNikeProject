@@ -102,7 +102,7 @@ const CardsPanelPage = (props) => {
       <div className="row row-cols-1 row-cols-md-5 g-5">
         {cardsArr.map((item, index) => {
           return (
-            <Fragment>
+            <Fragment key={index}>
               <div className="col">
                 <Carousel
                   className="main-slide"
@@ -112,7 +112,6 @@ const CardsPanelPage = (props) => {
                   showThumbs={false}
                   showArrows={false}
                   showIndicator={false}
-                  key={index}
                 >
                   <div className="image">
                     <img

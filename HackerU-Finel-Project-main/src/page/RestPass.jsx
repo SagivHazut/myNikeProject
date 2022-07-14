@@ -10,11 +10,6 @@ const ResetPass = (props) => {
   const [password, setPassword] = useState(props.newPass);
   const URL = "http://localhost:8181";
 
-  // const [confirmPassword, setConfirmPassword] = useState("");
-
-  // const handlePasswordTwoChange = (event) => {
-  //   setConfirmPassword(event.target.value);
-  // };
   const handlePasswordOneChange = (event) => {
     setPassword(event.target.value);
   };

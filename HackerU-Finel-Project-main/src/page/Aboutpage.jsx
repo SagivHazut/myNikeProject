@@ -7,9 +7,8 @@ import ourteam from "../../src/assets/About-Nike-Team_original.jpg";
 const AboutPage = () => {
   return (
     <Fragment>
-      <div class="row">
-        <div class="col-md-12 text-center">
-         
+      <div className="row">
+        <div className="col-md-12 text-center">
           <div className="topdiv">
             <video className="videoTag" autoPlay loop muted>
               <source src={bgcvideo} type="video/mp4" />

@@ -53,6 +53,7 @@ const LoginPage = () => {
           const decoded = jwt_decode(res.data.token);
           dispatch(authActions.updateUser(decoded));
           localStorage.setItem("tokenKey", res.data.token);
+          localStorage.setItem("email", JSON.stringify(email));
           if (location.state === null) {
             history.push("/CardsPanelPage");
           } else {
