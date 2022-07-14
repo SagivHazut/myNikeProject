@@ -203,7 +203,7 @@ const CardsPanelPage = (props) => {
                       <RemoveShoppingCart />
                     </IconButton>
                     <IconButton
-                      to="/cart"
+                      to="/nike/cart"
                       aria-label="Show cart items"
                       color="secondary"
                       className="cart"
@@ -244,7 +244,7 @@ const CardsPanelPage = (props) => {
           }}
           type="button"
           className="btn btn-secondary mb-2 mb-lg-0 btn-lg"
-          onClick={() => history.push("/cardregister")}
+          onClick={() => history.push("/nike/cardregister")}
         >
           Add a New Card
         </button>

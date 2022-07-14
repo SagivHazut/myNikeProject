@@ -15,7 +15,7 @@ const AuthGuardRoute = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/nike/login",
               state: { fromPage },
             }}
           />

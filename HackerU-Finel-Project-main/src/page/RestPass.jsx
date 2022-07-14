@@ -22,7 +22,7 @@ const ResetPass = (props) => {
     axios
       .post(`${array}`, { password })
       .then((res) => {
-        history.push("/home", { password });
+        history.push("/nike/home", { password });
       })
 
       .catch((err) => {

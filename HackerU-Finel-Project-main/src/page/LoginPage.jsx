@@ -55,12 +55,12 @@ const LoginPage = () => {
           localStorage.setItem("tokenKey", res.data.token);
           localStorage.setItem("email", JSON.stringify(email));
           if (location.state === null) {
-            history.push("/CardsPanelPage");
+            history.push("/nike/CardsPanelPage");
           } else {
             if (location.state.fromPage) {
               history.push(location.state.fromPage);
             } else {
-              history.push("/CardsPanelPage");
+              history.push("/nike/CardsPanelPage");
             }
           }
         })
@@ -130,7 +130,7 @@ const LoginPage = () => {
             <NavLink
               className="nav-link2 "
               aria-current="page"
-              to="/changepass"
+              to="/nike/changepass"
               activeClassName="activeLink1"
             >
               Reset your password

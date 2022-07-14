@@ -53,7 +53,7 @@ const CardRegister = () => {
         MenCollation,
       })
       .then((res) => {
-        history.push("/men", { description, phone, MenCollation });
+        history.push("/nike/men", { description, phone, MenCollation });
       })
       .catch((err) => {
         toast.error(err.response.data);

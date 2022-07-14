@@ -84,7 +84,7 @@ const Checkout = (props) => {
         ev.preventDefault();
         axios.get(`${URL}${email}`, { email, cartItems }).then((res) => {
           history.push(
-            "/home",
+            "/nike/home",
             toast.success("Email sent Successfully"),
             clearShoppingCart()
           );

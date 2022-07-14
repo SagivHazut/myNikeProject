@@ -15,7 +15,7 @@ const AuthRegister = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/home",
+              pathname: "/nike/home",
               state: { fromPage },
             }}
           />

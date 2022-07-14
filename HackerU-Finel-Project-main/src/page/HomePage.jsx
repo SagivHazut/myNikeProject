@@ -115,7 +115,7 @@ const HomePage = () => {
               <NavLink
                 className="nav-links"
                 aria-current="page"
-                to="/women"
+                to="/nike/women"
                 activeClassName="activeLink"
               >
                 <img src={nikelink} alt="" className="nikeLogoStore" />
@@ -132,7 +132,7 @@ const HomePage = () => {
               <NavLink
                 className="nav-links"
                 aria-current="page"
-                to="/men"
+                to="/nike/men"
                 activeClassName="activeLink"
               >
                 <img src={nikelink} alt="" className="nikeLogoStore" />

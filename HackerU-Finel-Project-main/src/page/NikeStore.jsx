@@ -39,7 +39,7 @@ export const NikeStore = (props) => {
             <NavLink
               className="nav-link"
               aria-current="page"
-              to="/women"
+              to="/nike/women"
               activeClassName="activeLink"
             >
               Women
@@ -47,7 +47,7 @@ export const NikeStore = (props) => {
             <NavLink
               className="nav-link"
               aria-current="page"
-              to="/men"
+              to="/nike/men"
               activeClassName="activeLink"
             >
               Men
@@ -98,7 +98,7 @@ export const NikeStore = (props) => {
                       <RemoveShoppingCart />
                     </IconButton>
                     <IconButton
-                      to="/cart"
+                      to="/nike/cart"
                       aria-label="Show cart items"
                       color="secondary"
                       className="cart"

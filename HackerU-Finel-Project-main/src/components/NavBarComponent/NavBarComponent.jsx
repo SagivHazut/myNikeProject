@@ -32,7 +32,7 @@ const NavBarComponent = (props) => {
             <NavLink
               className="nav-link"
               aria-current="page"
-              to="/home"
+              to="/nike/home"
               activeClassName="activeLink"
             >
               <img
@@ -47,7 +47,7 @@ const NavBarComponent = (props) => {
               <NavLink
                 className="nav-link"
                 aria-current="page"
-                to="/aboutpage"
+                to="/nike/aboutpage"
                 activeClassName="activeLink"
               >
                 About Us{" "}
@@ -56,7 +56,7 @@ const NavBarComponent = (props) => {
             <NavLink
               className="nav-link"
               aria-current="page"
-              to="/CardsPanelPage"
+              to="/nike/CardsPanelPage"
               activeClassName="activeLink"
             >
               Store{" "}
@@ -75,7 +75,7 @@ const NavBarComponent = (props) => {
                     <NavLink
                       className="nav-link "
                       aria-current="page"
-                      to="/login"
+                      to="/nike/login"
                       activeClassName="activeLink"
                       onClick={logout}
                     >
@@ -99,7 +99,7 @@ const NavBarComponent = (props) => {
                     <NavLink
                       className="nav-link "
                       aria-current="page"
-                      to="/login"
+                      to="/nike/login"
                       activeClassName="activeLink"
                     >
                       Login{" "}
@@ -110,7 +110,7 @@ const NavBarComponent = (props) => {
                       style={{ width: "80px" }}
                       className="nav-link"
                       aria-current="page"
-                      to="/signup"
+                      to="/nike/signup"
                       activeClassName="activeLink"
                     >
                       Sign Up{" "}

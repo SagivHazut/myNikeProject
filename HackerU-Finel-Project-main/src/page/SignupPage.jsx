@@ -30,7 +30,7 @@ const SignupPage = () => {
     axios
       .post("/users/register", { name, email, password, biz })
       .then((res) => {
-        history.push("/login", { email, password });
+        history.push("/nike/login", { email, password });
       })
       .catch((err) => {
         toast.error(err.response.data);

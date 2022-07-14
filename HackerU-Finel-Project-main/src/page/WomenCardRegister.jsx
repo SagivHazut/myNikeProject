@@ -54,7 +54,7 @@ const CardRegister = () => {
         WomenCollation,
       })
       .then((res) => {
-        history.push("/women", { description, phone, WomenCollation });
+        history.push("/nike/women", { description, phone, WomenCollation });
       })
       .catch((err) => {
         toast.error(err.response.data);
