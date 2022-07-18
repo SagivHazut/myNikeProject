@@ -1,12 +1,11 @@
 import { NavLink } from "react-router-dom";
 import "./NavBarComponent.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
-import nikelogo from "../../assets/nikelogo.png";
+import { useSelector } from "react-redux";
 
 const NavBarComponent = (props) => {
   const dispatch = useDispatch();
-
   const IsloggedInRedux = useSelector((state) => state.auth.loggedIn);
 
   let logout = () => {
@@ -35,9 +34,40 @@ const NavBarComponent = (props) => {
               to="/Admin/transactions"
               activeClassName="activeLink"
             >
-              transactions
+              Transactions
             </NavLink>
-            <li className="nav-item"></li>
+            <NavLink
+              className="nav-link"
+              aria-current="page"
+              to="/Admin/adminCards"
+              activeClassName="activeLink"
+            >
+              Store
+            </NavLink>
+            <div
+              className="collapse navbar-collapse justify-content-end"
+              id="navbarSupportedContent"
+            >
+              <div className="navbar-nav justify-content-end mb-2 mb-lg-0">
+                {IsloggedInRedux === true ? (
+                  <ul className="navbar-nav  mb-2 mb-lg-0">
+                    <li className="nav-item">
+                      <NavLink
+                        className="nav-link "
+                        aria-current="page"
+                        to="/nike/home"
+                        activeClassName="activeLink"
+                        onClick={logout}
+                      >
+                        Logout
+                      </NavLink>
+                    </li>
+                  </ul>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
           </ul>
         </div>
       </div>

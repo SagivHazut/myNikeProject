@@ -1,14 +1,21 @@
 import { useState, useEffect, Fragment } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { NikeStore } from "./NikeStore";
-import { CardActions, IconButton } from "@material-ui/core";
-import { AddShoppingCart } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
+import CardUpdate from "../page/CardUpdate";
+import { AdminMiniNav } from "./AdminMiniNav";
+import { Button } from "@material-ui/core";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { RemoveShoppingCart } from "@material-ui/icons";
-const WomenStore = (props) => {
+const AdminCards = (props) => {
+  const history = useHistory();
+
+  const URL = "http://localhost:8181/api/cards/";
+  const userInfoRedux = useSelector((state) => state.auth.userData);
   const [cardsArr, setCardsArr] = useState([]);
-  const { handleBuyButtonClick, handleRemoveButtonClick } = props;
+  const IsloggedInRedux = useSelector((state) => state.auth.loggedIn);
+  const [userArr] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     axios
@@ -19,10 +26,29 @@ const WomenStore = (props) => {
       .catch((err) => {});
   }, []);
 
-  let womenCollation = cardsArr.filter((item) => {
-    return item.WomenCollation;
-  });
+  const handleEditUser = (id) => {
+    let newUser = userArr.find((item) => {
+      return item._id === id;
+    });
 
+    setSelectedUser({ ...newUser });
+  };
+
+  const handleUpdateUser = (id) => {
+    let newCardsArr = cardsArr.filter((item) => item !== item._id);
+    setCardsArr(newCardsArr);
+    axios.get("/cards/allCards").then(({ data }) => {
+      setCardsArr(data);
+      setSelectedUser(null);
+    });
+  };
+
+  const handleDeleteCard = (id) => {
+    axios.delete(`${URL}${id}`).then((res) => {
+      const newCardsArr = cardsArr.filter((item) => item._id !== id);
+      setCardsArr(newCardsArr);
+    });
+  };
   function itemSortHtL() {
     const parsePrice = (x) => parseFloat(x.replace(/^\$/, "")) || 0;
     const sortedStudios = cardsArr
@@ -39,8 +65,7 @@ const WomenStore = (props) => {
   }
   return (
     <div>
-      <NikeStore></NikeStore>
-
+      <AdminMiniNav />
       <div style={{ marginLeft: "2%" }}>
         <h4>Sort by:</h4>
         <div className="form-check">
@@ -72,7 +97,7 @@ const WomenStore = (props) => {
       <br />
       <br />
       <div className="row row-cols-1 row-cols-md-5 g-5">
-        {womenCollation.map((item, index) => {
+        {cardsArr.map((item, index) => {
           return (
             <Fragment key={index}>
               <div className="col">
@@ -131,44 +156,61 @@ const WomenStore = (props) => {
                   </h6>
                 </div>
 
-                <CardActions
-                  disableSpacing
-                  style={{
-                    justifyContent: "space-between",
-                    margin: "0 auto",
-                    width: "50%",
-                    display: "flex",
-                  }}
-                  color="secondary"
+                <div
+                  style={{ justifyContent: "space-between", display: "flex" }}
+                  className="card-footer"
                 >
-                  <IconButton
-                    color="secondary"
-                    aria-label="Add to Cart"
-                    onClick={() => {
-                      handleRemoveButtonClick(item);
-                    }}
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={handleEditUser}
                   >
-                    <RemoveShoppingCart />
-                  </IconButton>
-                  <IconButton
-                    to="/nike/cart"
-                    aria-label="Show cart items"
-                    color="secondary"
-                    className="cart"
-                    onClick={() => {
-                      handleBuyButtonClick(item);
-                    }}
+                    Edit
+                  </Button>
+                  <Button
+                    type="button"
+                    className="btn btn-outline-danger"
+                    onClick={() => handleDeleteCard(item._id)}
                   >
-                    <AddShoppingCart />
-                  </IconButton>
-                </CardActions>
+                    Delete
+                  </Button>
+                </div>
               </div>
+
+              {userInfoRedux._id === item.userID &&
+              IsloggedInRedux === true &&
+              selectedUser !== null ? (
+                <CardUpdate
+                  name={item.name}
+                  description={item.description}
+                  phone={item.phone}
+                  image={item.image}
+                  id={item._id}
+                  onUpdateUser={handleUpdateUser}
+                ></CardUpdate>
+              ) : (
+                ""
+              )}
             </Fragment>
           );
         })}
       </div>
+      <button
+        style={{
+          display: "flex",
+          margin: "0 auto",
+          marginTop: "10px",
+        }}
+        type="button"
+        className="btn btn-secondary mb-2 mb-lg-0 btn-lg"
+        onClick={() => history.push("/nike/cardregister")}
+      >
+        Add a New Card
+      </button>
     </div>
   );
 };
 
-export default WomenStore;
+export default AdminCards;

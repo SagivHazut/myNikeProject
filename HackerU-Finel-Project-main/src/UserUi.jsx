@@ -16,7 +16,6 @@ import HomePage from "./page/HomePage";
 import LoginPage from "./page/LoginPage";
 import NotFoundPage from "./page/NotFoundPage";
 import CardRegister from "./page/CardsRegister";
-import WomenCardRegister from "./page/WomenCardRegister";
 import AuthRegister from "./components/AuthRegister";
 import AboutPage from "./page/Aboutpage";
 import Footer from "./page/Footer";
@@ -123,10 +122,7 @@ function Userui() {
               component={Checkout}
               ShoppingCart={shoppingCart}
             />
-            <AuthGuardRoute
-              path="/nike/womencardregister"
-              component={WomenCardRegister}
-            />
+
             <Route exact path="/nike/women">
               <WomenStore
                 handleBuyButtonClick={addItemToShoppingCart}

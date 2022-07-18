@@ -1,16 +1,22 @@
-import React from "react";
+import React, { Suspense } from "react";
 import UserUi from "./UserUi";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import Admin from "./Admin";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
     <div>
-      <Route path="/" exact>
-        <Redirect to="/nike/home" />
-      </Route>
-      <Route path="/nike" component={UserUi} />
-      <Route path="/admin" component={Admin} />
+      <ToastContainer />
+      <Suspense fallback={<div>loading</div>}>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/nike/home" />
+          </Route>
+          <Route path="/nike" component={UserUi} />
+          <Route path="/admin" component={Admin} />
+        </Switch>
+      </Suspense>
     </div>
   );
 };

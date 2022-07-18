@@ -4,12 +4,13 @@ import { useHistory } from "react-router-dom";
 import NikeLogo from "../assets/nikelogo.png";
 import { toast } from "react-toastify";
 
-const SignupPage = () => {
+const AdminSignupPage = () => {
   const history = useHistory();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [biz, setBiz] = useState(false);
 
   const handleNameChange = (ev) => {
     setName(ev.target.value);
@@ -20,11 +21,14 @@ const SignupPage = () => {
   const handlePasswordChange = (ev) => {
     setPassword(ev.target.value);
   };
+  const handleBizChange = (ev) => {
+    setBiz(ev.target.checked);
+  };
 
   const handleSignup = (ev) => {
     ev.preventDefault();
     axios
-      .post("/users/register", { name, email, password })
+      .post("/users/register", { name, email, password, biz })
       .then((res) => {
         history.push("/nike/login", { email, password });
       })
@@ -91,7 +95,19 @@ const SignupPage = () => {
               required
             />
           </div>
-
+          <div className="mb-3 form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="exampleCheck1"
+              onChange={handleBizChange}
+              checked={biz}
+              required
+            />
+            <label className="form-check-label" htmlFor="exampleCheck1">
+              I agree for the terms
+            </label>
+          </div>
           <button type="submit" className="btn btn-danger">
             Sign Up
           </button>
@@ -102,4 +118,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default AdminSignupPage;

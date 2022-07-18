@@ -5,6 +5,7 @@ import { Button } from "@material-ui/core";
 
 export default function Transactions() {
   const [cardsArr, setCardsArr] = useState([]);
+  const [itemArr, setItemArr] = useState([]);
   const URL = "http://localhost:8181/api/transactions/";
 
   useEffect(() => {
@@ -16,13 +17,22 @@ export default function Transactions() {
       .catch((err) => {});
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("/transactions/allCards")
+      .then(({ data }) => {
+        setItemArr(data);
+      })
+      .catch((err) => {});
+  }, []);
+
   const handleDeleteCard = (id) => {
     axios.delete(`${URL}${id}`).then((res) => {
       const newCardsArr = cardsArr.filter((item) => item._id !== id);
       setCardsArr(newCardsArr);
     });
   };
-
+  console.log(itemArr);
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Transactions</h1>
@@ -59,10 +69,11 @@ export default function Transactions() {
               </td>
               <td>{item.createdAt}</td>
               <td>
-                <p>{item.cartItems.phone}</p>
+                {itemArr.map((item, index) => (
+                  <p key={index}>{item.phone}</p>
+                ))}
               </td>
               <td>
-                {" "}
                 <div>
                   <Button
                     style={{ marginTop: 2 }}

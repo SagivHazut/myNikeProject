@@ -82,16 +82,6 @@ const NavBarComponent = (props) => {
                       Logout{" "}
                     </NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink
-                      className="nav-link "
-                      aria-current="page"
-                      to="/transactions"
-                      activeClassName="activeLink"
-                    >
-                      transactions
-                    </NavLink>
-                  </li>
                 </ul>
               ) : (
                 <ul className="navbar-nav  mb-2 mb-lg-0">
