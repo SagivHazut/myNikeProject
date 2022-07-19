@@ -162,6 +162,7 @@ const CardsPanelPage = (props) => {
           );
         })}
       </div>
+      <br />
     </div>
   );
 };

@@ -167,6 +167,7 @@ const WomenStore = (props) => {
           );
         })}
       </div>
+      <br />
     </div>
   );
 };
