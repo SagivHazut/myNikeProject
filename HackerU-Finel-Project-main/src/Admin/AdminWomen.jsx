@@ -3,20 +3,18 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import CardUpdate from "./CardUpdate";
-import { NikeStore } from "./NikeStore";
-import { CardActions, IconButton, Button } from "@material-ui/core";
-import { AddShoppingCart } from "@material-ui/icons";
+import { AdminMiniNav } from "./AdminMiniNav";
+import { Button } from "@material-ui/core";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { RemoveShoppingCart } from "@material-ui/icons";
-const WomenStore = (props) => {
+
+const AdminWomen = (props) => {
   const history = useHistory();
 
   const URL = "http://localhost:8181/api/cards/";
   const userInfoRedux = useSelector((state) => state.auth.userData);
   const [cardsArr, setCardsArr] = useState([]);
   const IsloggedInRedux = useSelector((state) => state.auth.loggedIn);
-  const { handleBuyButtonClick, handleRemoveButtonClick } = props;
   const [userArr] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -72,7 +70,7 @@ const WomenStore = (props) => {
   }
   return (
     <div>
-      <NikeStore></NikeStore>
+      <AdminMiniNav></AdminMiniNav>
 
       <div style={{ marginLeft: "2%" }}>
         <h4>Sort by:</h4>
@@ -163,62 +161,28 @@ const WomenStore = (props) => {
                     ${item.phone}
                   </h6>
                 </div>
-                {props.userIDCard === props.userIDLoggedIn &&
-                IsloggedInRedux === true ? (
-                  <div
-                    style={{ justifyContent: "space-between", display: "flex" }}
-                    className="card-footer"
+
+                <div
+                  style={{ justifyContent: "space-between", display: "flex" }}
+                  className="card-footer"
+                >
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={handleEditUser}
                   >
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={handleEditUser}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      type="button"
-                      className="btn btn-outline-danger"
-                      onClick={() => handleDeleteCard(item._id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                ) : (
-                  <CardActions
-                    disableSpacing
-                    style={{
-                      justifyContent: "space-between",
-                      margin: "0 auto",
-                      width: "50%",
-                      display: "flex",
-                    }}
-                    color="secondary"
+                    Edit
+                  </Button>
+                  <Button
+                    type="button"
+                    className="btn btn-outline-danger"
+                    onClick={() => handleDeleteCard(item._id)}
                   >
-                    <IconButton
-                      color="secondary"
-                      aria-label="Add to Cart"
-                      onClick={() => {
-                        handleRemoveButtonClick(item);
-                      }}
-                    >
-                      <RemoveShoppingCart />
-                    </IconButton>
-                    <IconButton
-                      to="/nike/cart"
-                      aria-label="Show cart items"
-                      color="secondary"
-                      className="cart"
-                      onClick={() => {
-                        handleBuyButtonClick(item);
-                      }}
-                    >
-                      <AddShoppingCart />
-                    </IconButton>
-                  </CardActions>
-                )}
+                    Delete
+                  </Button>
+                </div>
               </div>
 
               {userInfoRedux._id === item.userID &&
@@ -239,22 +203,20 @@ const WomenStore = (props) => {
           );
         })}
       </div>
-      {userInfoRedux.biz === true && IsloggedInRedux === true && (
-        <button
-          style={{
-            display: "flex",
-            margin: "0 auto",
-            marginTop: "10px",
-          }}
-          type="button"
-          className="btn btn-secondary mb-2 mb-lg-0 btn-lg"
-          onClick={() => history.push("/nike/cardregister")}
-        >
-          Add a New Card
-        </button>
-      )}
+      <button
+        style={{
+          display: "flex",
+          margin: "0 auto",
+          marginTop: "10px",
+        }}
+        type="button"
+        className="btn btn-secondary mb-2 mb-lg-0 btn-lg"
+        onClick={() => history.push("/admin/womencardregister")}
+      >
+        Add a New Card
+      </button>
     </div>
   );
 };
 
-export default WomenStore;
+export default AdminWomen;

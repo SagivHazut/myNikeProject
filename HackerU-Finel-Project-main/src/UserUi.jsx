@@ -15,11 +15,9 @@ import MenStore from "./page/Men";
 import HomePage from "./page/HomePage";
 import LoginPage from "./page/LoginPage";
 import NotFoundPage from "./page/NotFoundPage";
-import CardRegister from "./page/CardsRegister";
 import AuthRegister from "./components/AuthRegister";
 import AboutPage from "./page/Aboutpage";
 import Footer from "./page/Footer";
-import CardUpdate from "./page/CardUpdate";
 import { NikeStore } from "./page/NikeStore";
 import Basket from "./page/Basket";
 import RestPassword from "./page/RestPass";
@@ -113,10 +111,7 @@ function Userui() {
             <Route path="/nike/resetpassword" component={RestPassword} />
             <AuthRegister path="/nike/login" component={LoginPage} />
             <AuthRegister path="/nike/signup" component={SignupPage} />
-            <AuthGuardRoute
-              path="/nike/cardregister"
-              component={CardRegister}
-            />
+
             <AuthGuardRoute
               path="/nike/checkout"
               component={Checkout}
@@ -150,7 +145,6 @@ function Userui() {
                 handleRemoveButtonClick={RemoveItemToShoppingCart}
               />
             </Route>
-            <AuthGuardRoute path="/nike/CardUpdate" component={CardUpdate} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </Suspense>

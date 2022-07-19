@@ -9,7 +9,10 @@ import AuthRegister from "./components/AuthRegister";
 import AdminCards from "./Admin/AdminCards";
 import { Redirect } from "react-router-dom";
 import WomenCardRegister from "./Admin/WomenCardRegister";
-
+import AdminWomen from "./Admin/AdminWomen";
+import AdminMen from "./Admin/AdminMen";
+import CardUpdate from "./Admin/CardUpdate";
+import CardRegister from "./Admin/CardsRegister";
 const Admin = () => {
   return (
     <div>
@@ -24,9 +27,16 @@ const Admin = () => {
         <AuthGuardAdminRoute path="/admin/adminCards" component={AdminCards} />
         <Redirect to="/admin/transactions" />
         <AuthGuardAdminRoute
-          path="/nike/womencardregister"
+          path="/admin/womencardregister"
           component={WomenCardRegister}
         />
+        <AuthGuardAdminRoute path="/admin/CardUpdate" component={CardUpdate} />
+        <AuthGuardAdminRoute
+          path="/admin/CardRegister"
+          component={CardRegister}
+        />
+        <AuthGuardAdminRoute path="/admin/AdminMen" component={AdminMen} />
+        <AuthGuardAdminRoute path="/admin/AdminWomen" component={AdminWomen} />
         <AuthRegister path="/admin/signup" component={AdminSignupPage} />
         <AuthRegister path="/admin/login" component={Adminlogin} />
       </div>

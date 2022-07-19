@@ -2,14 +2,17 @@ import React, { Fragment, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
-import { CardActions, IconButton } from "@material-ui/core";
-import { AddShoppingCart } from "@material-ui/icons";
-import { RemoveShoppingCart } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
+import CardUpdate from "./CardUpdate";
+import { useSelector } from "react-redux";
 
 export const AdminMiniNav = (props) => {
   const [filter, setFilter] = useState("");
   const [cardsArr, setCardsArr] = useState([]);
-  const { handleBuyButtonClick, handleRemoveButtonClick } = props;
+  const userInfoRedux = useSelector((state) => state.auth.userData);
+  const IsloggedInRedux = useSelector((state) => state.auth.loggedIn);
+  const [userArr] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const searchText = (event) => {
     setFilter(event.target.value);
@@ -31,6 +34,29 @@ export const AdminMiniNav = (props) => {
     );
   });
 
+  const handleEditUser = (id) => {
+    let newUser = userArr.find((item) => {
+      return item._id === id;
+    });
+
+    setSelectedUser({ ...newUser });
+  };
+
+  const handleUpdateUser = (id) => {
+    let newCardsArr = cardsArr.filter((item) => item._id !== id);
+    setCardsArr(newCardsArr);
+    axios.get("/cards/allCards").then(({ data }) => {
+      setCardsArr(data);
+      setSelectedUser(null);
+    });
+  };
+
+  const handleDeleteCard = (id) => {
+    axios.delete(`${URL}${id}`).then((res) => {
+      const newCardsArr = cardsArr.filter((item) => item._id !== id);
+      setCardsArr(newCardsArr);
+    });
+  };
   return (
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-light ">
@@ -39,7 +65,7 @@ export const AdminMiniNav = (props) => {
             <NavLink
               className="nav-link"
               aria-current="page"
-              to="/nike/women"
+              to="/admin/AdminWomen"
               activeClassName="activeLink"
             >
               Women
@@ -47,7 +73,7 @@ export const AdminMiniNav = (props) => {
             <NavLink
               className="nav-link"
               aria-current="page"
-              to="/nike/men"
+              to="/admin/AdminMen"
               activeClassName="activeLink"
             >
               Men
@@ -55,6 +81,7 @@ export const AdminMiniNav = (props) => {
           </ul>
         </div>
       </nav>
+
       <TextField
         style={{ width: "33%", margin: "1%" }}
         id="demo-helper-text-misaligned-no-helper"
@@ -66,9 +93,28 @@ export const AdminMiniNav = (props) => {
         value={filter}
         onChange={(e) => searchText(e)}
       />
+      {dataSearch.map((item, index) => {
+        return (
+          <div style={{ width: "20%", display: "block", position: "absolute" }}>
+            {userInfoRedux._id === item.userID &&
+            IsloggedInRedux === true &&
+            selectedUser !== null ? (
+              <CardUpdate
+                name={item.name}
+                description={item.description}
+                phone={item.phone}
+                image={item.image}
+                id={item._id}
+                onUpdateUser={handleUpdateUser}
+              ></CardUpdate>
+            ) : (
+              ""
+            )}
+          </div>
+        );
+      })}
 
-      <br />
-      <div className="row justify-content-center">
+      <div className="row justify-content-center" style={{ width: "100%" }}>
         {dataSearch.map((item, index) => {
           return (
             <div key={index} className="col-11 col-md-6 col-lg-3 mx-0 mb-4">
@@ -78,37 +124,30 @@ export const AdminMiniNav = (props) => {
                   <h5 className="card-title">{item.name}</h5>
                   <p className="card-text">{item.description}</p>
                   <p className="card-text">${item.phone}</p>
-                  <CardActions
-                    disableSpacing
+                  <div
                     style={{
                       justifyContent: "space-between",
-                      margin: "0 auto",
-                      width: "50%",
                       display: "flex",
                     }}
-                    color="secondary"
+                    className="card-footer"
                   >
-                    <IconButton
-                      color="secondary"
-                      aria-label="Add to Cart"
-                      onClick={() => {
-                        handleRemoveButtonClick(item);
-                      }}
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={handleEditUser}
                     >
-                      <RemoveShoppingCart />
-                    </IconButton>
-                    <IconButton
-                      to="/nike/cart"
-                      aria-label="Show cart items"
-                      color="secondary"
-                      className="cart"
-                      onClick={() => {
-                        handleBuyButtonClick(item);
-                      }}
+                      Edit
+                    </Button>
+                    <Button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={() => handleDeleteCard(item._id)}
                     >
-                      <AddShoppingCart />
-                    </IconButton>
-                  </CardActions>
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

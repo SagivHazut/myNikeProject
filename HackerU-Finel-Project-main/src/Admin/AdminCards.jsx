@@ -2,7 +2,7 @@ import { useState, useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import CardUpdate from "../page/CardUpdate";
+import CardUpdate from "./CardUpdate";
 import { AdminMiniNav } from "./AdminMiniNav";
 import { Button } from "@material-ui/core";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
